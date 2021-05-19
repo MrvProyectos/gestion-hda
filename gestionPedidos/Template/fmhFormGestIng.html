@@ -1,0 +1,58 @@
+{% extends "Superior/fmhbaseOpciones.html" %}
+
+{% block title %}Gestion de Ingreso{% endblock %}
+
+{% block content %}
+
+<!-- Sub-Titulo -->
+<div class="row" id="barraSubTitulo">
+    <div class="col col-1" id="primera">Gestión de Ingresos</div>
+</div>
+
+<br>
+<br>
+
+<div class="container">
+
+    {%  if form.errors %}
+    <p style="color: red;">Revisar Campo</p>
+    {% endif %}
+
+    <form action="" method="POST"> 
+        {% csrf_token %}
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-3"><label>Periodo:</label></div>
+                <div class="col-md-3"><label>Mes:</label></div>
+                <div class="col-md-3"></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-3">
+                    {{ form.periodo.errors }}
+                    {{ form.periodo }}
+                </div>
+                <div class="col-md-3">
+                    {{ form.mes_gestion.errors }}
+                    {{ form.mes_gestion }}
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+        </div>
+
+        <hr>
+        <br>
+        <div class="form-group">
+            <div id="outer">
+                <div class="inner"><input type="submit" value="Procesar" class="btn btn-primary btn-sm button-width"></div>
+                <div class="inner"><a href="{% url 'gestionHogar' %}" class="btn btn-primary btn-sm button-width">Inicio</a></div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "Superior/fmhbaseOpciones.html" %}
+
+{% block title %}Verificación{% endblock %}
+
+{% block content %}
+
+<style>
+
+    #percerrado h2{
+        text-align: center;
+        color: rgb(100, 47, 47);
+    }
+
+</style>
+
+<!-- Sub-Titulo -->
+    <div class="row" id="barraSubTitulo">
+        <div class="col col-6" id="primera">{{msgTitulo}}</div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="form-group">
+            <div class="col col-12" id="percerrado">
+                <h2>{{msgSubtitulo}}</h2>
+            </div>
+            <br>
+            <br>
+            <a href="{% url 'gestionHogar' %}" class="btn btn-primary button-width">Inicio</a>
+            <hr>
+        </div>
+    </div>
+
+{%  endblock %}

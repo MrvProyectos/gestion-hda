@@ -1,0 +1,104 @@
+{% extends "Superior/fmhbaseOpciones.html" %}
+
+{% block title %}Listado de Movimientos{% endblock %}
+
+{% load humanize %}
+
+{% block content %}
+
+<style>
+
+    #scrollTable table{
+        max-width: 100%;
+        font-size: 12px;
+        border: 1px solid gray;
+    }
+
+    #scrollTable{
+        overflow-y: scroll;
+        overflow-x: scroll;
+        height: 460;
+    }
+
+    thead th{
+        position: sticky;
+        top: 0;
+        background-color: rgb(93, 125, 161);
+        color: rgb(248, 248, 244);
+    }
+
+</style>
+
+<!--Funcionamiento Modal -->
+<!--
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+-->
+
+<!-- Sub-Titulo -->
+    <div class="row" id="barraSubTitulo">
+        <div class="col col-1" id="primera">REGISTROS INGRESADOS</div>
+    </div>
+    <br>
+    <div class="container">
+
+        {% if listing %}
+        <div id="scrollTable">
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>#ID</th>
+                <th>Año</th>
+                <th>Mes</th>
+                <th>Tipo de Mvto.</th>
+                <th>Descripción</th>
+                <th>Monto $</th>
+                <th>Estado de Pago</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for listado in listing %}
+              <tr>
+                <td><strong>{{listado.id}}</strong></td>
+                <td>{{listado.movango}}</td>
+                <td>{{listado.movmes}}</td>
+
+                {% if listado.movcodtipo == 'GTO01' %}   <td>Financieros</td>
+                {% elif listado.movcodtipo == 'GTO02' %} <td>Fijos</td>
+                {% elif listado.movcodtipo == 'GTO03' %} <td>Autopistas</td>
+                {% elif listado.movcodtipo == 'GTO04' %} <td>Tecnología</td>
+                {% elif listado.movcodtipo == 'GTO05' %} <td>Otros</td>
+                {% else %} <td>Codigo No Definido</td>
+                {% endif %}
+
+                <td>{{listado.movglosa}}</td>
+                <td>{{listado.movmto|intcomma}}</td>
+                
+                {% if listado.movestado == 0 %}
+                    <td>Pendiente</td>
+                {% else %}
+                    <td>Pagado</td>
+                {% endif %}
+              </tr>
+
+              {%endfor %}
+
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+            <h2>No existe periodo</h2>
+        {% endif %}
+
+        <br>
+        <hr>
+        <div class="form-group">
+            <div id="outer">
+                <div class="inner"><a href="{% url 'fmhIngresoMov' %}" class="btn btn-primary button-width-me">Nuevo Ingreso</a></div>
+                <div class="inner"><a href="{% url 'gestionHogar' %}" class="btn btn-primary button-width">Inicio</a></div>
+            </div>
+        </div>
+
+    </div>
+
+{%  endblock %}

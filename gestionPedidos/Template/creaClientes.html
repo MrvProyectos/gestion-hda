@@ -1,0 +1,61 @@
+{% extends "Superior/fmhbaseOpciones.html" %}
+
+{% block title %}Modulo Ingreso{% endblock %}
+
+{% block content %}
+
+    <!-- Sub-Titulo -->
+    <div class="row" id="barraSubTitulo">
+        <div class="col col-1" id="primera">Creación De Clientes</div>
+    </div>
+
+    <br>
+    <br>
+
+    <div class="container">
+    <form action="/creaClientesBD/" method="POST"> {% csrf_token %}
+  
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6"><label>Nombre:</label></div>
+                <div class="col-md-6"><label>Direccion:</label></div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <input class="form-control" name="nombre" type="text" required id="nombre" placeholder="Nombre"/>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control" name="direccion" type="text" required id="direccion">
+                        <option value=""></option>
+                        <option>Camino Del Cerro 101, Rinconada</option>
+                        <option>Av. Mercurio 5727, Conchali</option>
+                        <option>San Sebastian 4106,  Pte. Alto</option>
+                        <option>Calle Nueva S/N, Rinconada</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-6"><label>Email:</label></div>
+                <div class="col-md-6"><label>Teléfono:</label></div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"><input class="form-control" name="email" type="text" required id="email" placeholder="Email"/></div>
+                <div class="col-md-6"><input class="form-control" name="telefono" type="text" required id="telefono" placeholder="Telefono"/></div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="form-group">
+            <div id="outer">
+                <div class="inner"><input type="submit" value="Crear Cliente" class="btn btn-primary"></div>
+                <div class="inner"><a href="{% url 'gestionHogar' %}" class="btn btn-primary">Volver Menu</a></div>
+            </div>
+        </div>
+
+    </form>
+    </div>
+
+{%  endblock %}

@@ -1,0 +1,59 @@
+<html>
+<title>Pedidos</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+
+<body>
+
+    <form id="formid" action="/ElimPedSelect/" method="POST">
+        {% csrf_token %}
+
+        {% if listado %}
+        <table>
+            <!--
+            {{ form.as_table }}
+            -->
+            <tr>
+                <th><input type="checkbox" id="selectall"></th>
+                <th colspan="4">Selección Multiple</th>
+            </tr>
+            <tbody>
+                {% for lista in listado %}
+                <tr>
+                    <td><input type="checkbox" class="case" name="estado" value="{{lista.numero}}"></td>
+                    <td>{{lista.numero}}</td>
+                    <td>{{lista.fecha}}</td>
+                    <td>{{lista.pedango}}</td>
+                    <td>{{lista.pedmes}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>No existe Listado</p>
+        {% endif %}
+
+        <br>
+        <br>
+        <input type="submit" value="Enviar" id="enviar">
+
+    </form>
+
+<script>
+$("#selectall").on("click", function() {
+  $(".case").prop("checked", this.checked);
+});
+
+// Si todas las casillas están seleccionadas, marque la casilla Seleccionar todo y viceversa.
+$(".case").on("click", function() {
+    if ($(".case").length == $(".case:checked").length) {
+        $("#selectall").prop("checked", true);
+        } 
+    else {
+        $("#selectall").prop("checked", false);
+        }
+});
+</script>
+
+</body>
+</html>

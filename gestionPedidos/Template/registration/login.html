@@ -1,0 +1,110 @@
+{% extends "Superior/fmhbaseLogin.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .padtitulo{
+        padding-top: 10px;
+    }
+
+    #id_username{
+        font: normal 12px Trebuchet MS;
+        border-radius: 5px;
+        width: 180px;
+        height: 35px;
+        border: 1px solid #39c;
+    }
+
+    #id_password{
+        font: normal 12px Trebuchet MS;
+        border-radius: 5px;
+        width: 180px;
+        height: 35px;
+        border: 1px solid #39c;
+    }
+
+    #tipfont{
+        font: normal 12px Trebuchet MS;
+    }
+
+    #msgacceso{
+        font: normal 12px Trebuchet MS;
+        color: rgb(241, 40, 40);
+    }
+
+    #centrado{
+        border: outset;
+        border-radius: 14px;
+        background-color: whitesmoke;
+        max-height: 100%;
+    }
+
+    #titulo{
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        margin: auto;
+        background-color: rgb(69, 136, 190);
+        height: 40px;
+        color:whitesmoke;
+        font: normal 14px Trebuchet MS;
+        padding: 10px;
+    }
+
+</style>
+
+<!-- Sub-Titulo -->
+<div class="row" id="barraSubTitulo">
+    <div class="col col-6" id="primera"></div>
+</div>
+
+<br>
+
+<div class="container">
+    <div class="form-group">
+    <div class="row">
+        <div class="col col-5"></div>
+
+        <div class="col col-3" id="centrado">
+            <div class="row">
+                <div class="col col-12" id="titulo">Acceso al Sistema</div>
+            </div>
+
+            <div class="form-group padtitulo">
+                <form method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <div id="tipfont"><b><label>Usuario</label></b></div>
+                        {{ form.username.errors }}
+                        {{ form.username }}
+                    </div>
+        
+                    <div class="form-group">
+                        <div id="tipfont"><b><label>Contraseña</label></b></div>
+                        {{ form.password.errors }}
+                        {{ form.password }}
+                    </div>
+
+                    <div id="msgacceso" class="form-group">
+                        <p>{{ form.non_field_errors }}</p>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <button type="submit" class="btn btn-success btn-md">Iniciar Sesión</button>
+                        </div>
+                    </div>    
+                </form>
+            </div>
+        </div>
+
+        <div class="col col-4"></div>
+
+
+    </div>
+    </div>
+</div>
+
+{%  endblock %}

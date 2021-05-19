@@ -1,0 +1,273 @@
+{% extends "Superior/fmhbaseOpciones.html" %}
+
+{% block title %}Modulo Ingreso{% endblock %}
+
+{% load humanize %}
+
+{% block content %}
+
+{% load static %}
+
+<!--<link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">-->
+
+<style>
+
+    #style_titP{
+        color: rgb(53, 40, 40);
+        font: bold 12px Trebuchet MS;
+        margin-left: 50px;
+        padding-top: 5px;
+    }
+
+    #campos{
+        background-color: whitesmoke;
+        border-style: inset;
+        color: black;
+        font: normal 12px Trebuchet MS;
+        height: 28px;
+        padding: 5px;
+    }
+
+    #style_tit{
+        color: rgb(53, 40, 40);
+        font: bold 12px Trebuchet MS;
+        padding-left: 3px;
+    }
+
+    /* Campos del Formulario */
+    #id_ingcodtipo{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 13px;
+        color: rgb(105, 104, 104);
+    }
+
+    #id_ingGlosa{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 13px;
+        color: rgb(105, 104, 104);
+    }
+
+    #id_ingValor{
+        font: normal 13px Trebuchet MS;
+        color: black;
+        width: 150px;
+        text-align: right;
+    }
+
+    #style_titDer{
+        color: rgb(53, 40, 40);
+        font: bold 12px Trebuchet MS;
+        padding-left: 120px;
+    }
+
+    #scrollTable table{
+        font-size: 12px;
+        border: 1px solid gray;
+    }
+
+    #scrollTable{
+        overflow-y: scroll;
+        height: 200;
+    }
+
+    .conttable {
+      text-align: center;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgb(217, 235, 235);
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(189, 182, 154, 0.7);
+        color: rgb(112, 24, 78);
+    }
+
+    .thead-green th {
+        background-color: rgb(81, 121, 109);
+        color: white;
+        position: sticky;
+        top: 0;
+    }
+
+    .tfot-green {
+        background-color: rgb(81, 121, 109);
+        color: white;
+        top: 0;
+        font: normal 16px Trebuchet MS;
+    }
+
+    #alingRigth{
+        text-align: right;
+        padding-right: 45px;
+    }
+
+    /* Titulo Registros Ingresados */
+    h3 { 
+        width:100%; 
+        text-align: center; 
+        font: normal 16px Trebuchet MS;
+        border-bottom: 1px solid black;
+        line-height: 0.1em; 
+        margin: 10px 0 20px; 
+    }
+
+    h3 span {
+        background:#fff; 
+        padding: 0 10px;
+    }
+
+</style>
+
+<script>
+
+    function Valida(miForm) {
+        valor=document.getElementById("id_ingValor").value
+
+        if (isNaN(valor)) {
+            alert('ATENCIÓN. El monto $ ingresado debe ser numérico');
+            document.getElementById('id_ingValor').value = '';
+            document.miForm.id_ingValor.focus()
+            return false;
+            }
+        else {
+            if (valor<=0) {
+                alert('ATENCIÓN. Monto $ debe ser Mayor a 0');
+                document.getElementById('id_ingValor').value = '';
+                document.miForm.id_ingValor.focus()
+                return false;
+                }
+        }
+        return true;
+        }
+
+</script>
+
+<!-- Sub-Titulo -->
+<div class="row" id="barraSubTitulo">
+    <div class="col col-6" id="primera">MÓDULO INGRESOS</div>
+</div>
+
+<form method="POST" name="miForm" onsubmit="return Valida(this);">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <!-- Grupo 1 -->
+    <div class="form-group">
+        <div class="container">
+            <!-- Período -->
+            <div class="row">
+                <div id="style_titP" class="col col-2"><label>Periodo</label></div>
+                <div id="style_titP" class="col col-3"><label>Mes</label></div>
+                <div class="col col-7"></div>
+            </div>
+            <div class="row">
+                <div class="col col-2" id="campos">{{ Periodo }}</div>
+                <div class="col col-3" id="campos">{{ Mes }}</div>
+                <div class="col col-7"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grupo 2 -->
+    <div class="form-group">
+        <div class="container">
+            <!-- Tipo de Ingreso -->
+            <div class="row">
+                <div class="col col-4">
+                    <div id="style_tit">
+                        <label>Tipo de Ingreso</label>
+                    </div>
+                    {{ form.ingcodtipo.errors }}
+                    {{ form.ingcodtipo }}
+                </div>
+                <div class="col col-6">
+                    <div id="style_tit">
+                        <label>Concepto</label>
+                    </div>
+                    {{ form.ingGlosa.errors }}
+                    {{ form.ingGlosa }}
+                </div>
+                <div class="col col-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grupo 3 -->
+    <div class="form-group">
+        <div class="container">
+            <!-- Monto Ingreso -->
+            <div class="row">
+                <div class="col col-4">
+                    <div id="style_titDer">
+                        <label>Valor</label>
+                    </div>
+                    {{ form.ingValor.errors }}
+                    {{ form.ingValor }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grupo Submit -->
+    <div class="form-group">
+        <div class="container">
+            <div class="row">
+                <div class="col col-12">
+                    <button type="submit" class="btn btn-success btn-sm button-width">Grabar</button>
+                    <a href="{% url 'gestionHogar' %}" class="btn btn-primary btn-sm button-width">Volver</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tabla de Ingresos -->
+    <div class="container conttable">
+        <h3><span>I n g r e s o s</span></h3>
+        <div id="scrollTable">
+            <table class="table table-striped table-hover">
+                <thead class="thead-green">
+                    <tr>
+                        <th>ID</th>
+                        <th>TIPO DE INGRESO</th>
+                        <th>CONCEPTO</th>
+                        <th id="alingRigth">MONTO $</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for listado in listing %}
+                    <tr>
+                        <td>{{listado.id}}</td>
+                        {% if listado.ingcodtipo == 'ING01' %}
+                            <td>Remuneraciones</td>
+                        {% elif listado.ingcodtipo == 'ING02' %}
+                            <td>Retornos</td>
+                        {% elif listado.ingcodtipo == 'ING03' %}
+                            <td>Bonos</td>
+                        {% elif listado.ingcodtipo == 'ING04' %}
+                            <td>Otros Ingresos</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                        <td>{{listado.ingGlosa}}</td>
+                        <td id="alingRigth">{{listado.ingValor|intcomma}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tabla para Sumatoria -->
+        <table class="table table-striped">
+            <tfot>
+                <tr>
+                    <td class="tfot-green"> Total : ${{ SumIng|intcomma }}.-</td>
+                </tr>    
+            </tfot>    
+        </table>
+
+    </div>
+
+</form>
+
+{%  endblock %}

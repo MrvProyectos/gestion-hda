@@ -1,0 +1,133 @@
+{% extends "Superior/fmhbaseOpciones.html" %}
+
+{% block title %}Gestion de Ingresos{% endblock %}
+
+{% load humanize %}
+
+{% block content %}
+
+<style>
+
+    #scrollTable table{
+        max-width: 100%;
+        font-size: 12px;
+        border: 1px solid gray;
+    }
+
+    #scrollTable{
+        overflow-y: scroll;
+        overflow-x: scroll;
+        height: 440;
+    }
+
+    thead th{
+        position: sticky;
+        top: 0;
+        background-color: rgb(93, 125, 161);
+        color: rgb(248, 248, 244);
+    }
+
+    #checkall{
+        padding-top: 10px;
+    }
+
+    #alingRigth{
+        text-align: right;
+        padding-right: 5px;
+    }
+
+</style>
+
+<!-- Funcion para checkbox general -->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js"></script>-->
+    
+<!-- Sub-Titulo -->
+    <div class="row" id="barraSubTitulo">
+        <div class="col col-6" id="primera">Gestión de Registros Ingresados</div>
+    </div>
+    <br>
+    <div class="container">
+
+        {% if listing %}
+
+        <form id="formGestIng" action="/ElimselallIng/" method="POST">
+            {% csrf_token %}
+
+        <div id="scrollTable">
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="selectall"></th>
+                <th>#ID</th>
+                <th>Año</th>
+                <th>Mes</th>
+                <th>Tipo de Ingreso</th>
+                <th>Concepto</th>
+                <th id="alingRigth">Monto $</th>
+                <th style="text-align: center; background-color: rgb(62, 108, 158);" colspan="2">SELECCIONE OPCIÓN</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for listado in listing %}
+              <tr>
+                <td><input type="checkbox" class="case" name="estcheck" value="{{listado.id}}"></td>
+                <td><strong>{{listado.id}}</strong></td>
+                <td>{{listado.ingango}}</td>
+                <td>{{listado.ingmes}}</td>
+
+                {% if listado.ingcodtipo == 'ING01' %}   <td>Remuneraciones</td>
+                {% elif listado.ingcodtipo == 'ING02' %} <td>Retornos</td>
+                {% elif listado.ingcodtipo == 'ING03' %} <td>Bonos</td>
+                {% elif listado.ingcodtipo == 'ING04' %} <td>Otros Ingresos</td>
+                {% else %} <td>Codigo No Definido</td>
+                {% endif %}
+
+                <td>{{listado.ingGlosa}}</td>
+                <td id="alingRigth">{{listado.ingValor|intcomma}}</td>
+                
+                <td id="alingbuteli"><a href="{% url 'eliminaIng' listado.id listado.ingango listado.ingmes %}" class="btn btn-danger btn-sm">Elimina</a></td>
+                <td><a href="{% url 'actualizaIng' listado.id %}" class="btn btn-primary btn-sm">Modifica</a></td>
+              </tr>
+
+              {%endfor %}
+
+            </tbody>
+        </table>
+        </div>
+        <div class="form-group" id="checkall">
+            <input type="submit" class="btn btn-danger btn-sm" value="Elimina Selección" id="enviar">
+        </div>
+        </form>
+
+        <!-- casilla de eliminacion masiva -->
+        <script>
+            $("#selectall").on("click", function() {
+              $(".case").prop("checked", this.checked);
+            });
+            
+            // Si todas las casillas están seleccionadas, marque la casilla Seleccionar todo y viceversa.
+            $(".case").on("click", function() {
+                if ($(".case").length == $(".case:checked").length) {
+                    $("#selectall").prop("checked", true);
+                    } 
+                else {
+                    $("#selectall").prop("checked", false);
+                    }
+            });
+        </script>
+        
+        {% else %}
+            <h2>ATENCIÓN. No existen registros para periodo iniciado.</h2>
+        {% endif %}
+
+        <hr>
+        <div class="form-group">
+            <div id="outer">
+                <div class="inner"><a href="{% url 'IngresoHab' %}" class="btn btn-primary btn-sm button-width">Ingreso</a></div>
+                <div class="inner"><a href="{% url 'gestionHogar' %}" class="btn btn-primary btn-sm button-width">Inicio</a></div>
+            </div>
+        </div>
+
+    </div>
+
+{%  endblock %}

@@ -1,0 +1,243 @@
+{% extends "Superior/fmhbaseOpciones.html" %}
+
+{% block title %}Gestion de Pagos{% endblock %}
+
+{% load humanize %}
+
+{% load static %}
+
+{% block content %}
+
+<style>
+
+    #style_tit{
+        color: rgb(53, 40, 40);
+        font: bold 11px Trebuchet MS;
+        text-align: right;
+        padding: 5px;
+        color: black;
+    }
+
+    #id_periodo{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 10px;
+        color: rgb(105, 104, 104);
+        width: 70px;
+        height: 32px;
+    }
+
+    #id_meses{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 10px;
+        color: rgb(105, 104, 104);
+        width: 100px;
+        height: 32px;
+    }
+
+    #id_idMod{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 13px;
+        color: rgb(105, 104, 104);
+        width: 100px;
+    }
+
+    #id_idRef{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 13px;
+        color: rgb(105, 104, 104);
+        width: 100px;
+    }
+
+    #id_Glosa{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 13px;
+        color: rgb(105, 104, 104);
+        max-width: 100%;
+    }
+
+    #scrollTable table{
+        max-width: 100%;
+        font-size: 12px;
+        border: 1px solid gray;
+    }
+
+    #scrollTable{
+        overflow-y: scroll;
+        height: 440;
+    }
+
+    thead th{
+        position: sticky;
+        top: 0;
+        background-color: rgb(93, 125, 161);
+        color: rgb(248, 248, 244);
+    }
+
+    #alingRigth{
+        text-align: right;
+        padding-right: 5px;
+    }
+
+    .alingRigth2{
+        text-align: right;
+        padding-right: 5px;
+    }
+
+    #text1{
+        padding-top: 5px;
+        color: black;
+        text-align: left;
+    }
+    
+    #text2{
+        padding-top: 5px;
+        color: rgb(4, 148, 4);
+        text-align: left;
+        font-size: 18px;
+    }
+
+    #text3{
+        padding-top: 5px;
+        color: rgb(226, 49, 49);
+        text-align: left;
+        font-size: 18px;
+    }
+
+    .contleft{
+        float: left;
+        width: fit-content;
+        background-color: white snow;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        border-style: groove;
+        border-radius: 7px;
+        height: 200px;
+        border-color: whitesmoke;
+        margin-left: 12px;
+    }
+
+</style>
+
+<!-- Sub-Titulo -->
+<div class="row" id="barraSubTitulo">
+    <div class="col col-6" id="primera">INFORME DE PAGOS</div>
+</div>
+
+    {% if listing %}
+
+    <br>
+    <div class="container contleft">
+        {% for sumpag in pagPdtes %}
+            <div id="text1">Total de Registros</div>
+            <div id="text2">{{listing|length}}</div>
+            <div id="text1">Total de Pagos Pdtes.</div>
+            <div id="text3">$ {{sumpag|intcomma}}</div>
+        {% endfor %}
+    </div>
+
+    <div class="container">
+        <div id="scrollTable">
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>#ID</th>
+                <th>Año</th>
+                <th>Mes</th>
+                <th>Id Ref. Mvto.</th>
+                <th>Glosa Mvto.</th>
+                <th id="alingRigth">Monto a Pagar</th>
+                <th colspan="2" style="text-align: center; background-color: rgb(62, 108, 158);">Opción</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for listado in listing %}
+                <tr>
+                    <td id="selectId">{{ listado.id }}</td>
+                    <td>{{listado.pagango}}</td>
+                    <td>{{listado.pagmes}}</td>
+                    <td id="selectIdRef">{{ listado.pagidrefmov }}</td>
+                    <td id="selectGlosa">{{listado.pagglosamov}}</td>
+                    <td class="alingRigth2" id="selectMmov">{{listado.pagmtomov|intcomma}}</td>
+                    <td style="text-align: center;"><a href="{% url 'pagoDocumento' listado.id listado.pagidrefmov %}" class="btn btn-success btn-sm">Pagar</a></td>
+                    <td style="text-align: center;"><a href="" class="btnPospone btn btn-Info btn-sm" data-toggle="modal" data-target="#posponePag">Posponer</a></td>
+                </tr>
+              {%endfor %}
+            </tbody>
+        </table>
+        </div>
+        
+        <div id="app"></div>
+        <script src="{% static 'js/app.js' %}"></script>
+
+        <!-- Modal Posponer  -->
+        <div class="modal fade" id="posponePag" tabindex="-1" role="dialog" aria-labelledby="textModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            
+            <!-- Formulario para posponer el pago -->
+            <form action="/fmhPosponerPago/" method="POST">
+                {% csrf_token %}
+
+                <div class="modal-dialog" role="document">
+                <div id="modalinirep" class="modal-content">
+                    <div class="modal-header">
+                    <h3 class="modal-title" id="textModalLabel">Posponer Pago</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="form-group">
+                                <div class="row">
+                                    <!-- Cierre -->
+                                    <div class="col col-3">
+                                        <label id="style_tit">Periodo</label>
+                                        {{ form.periodo }}
+                                    </div>
+                                    <div class="col col-3">
+                                        <label id="style_tit">Mes</label>
+                                        {{ form.meses }}
+                                    </div>
+                                    <div class="col col-3">
+                                        <label id="style_tit">ID</label>
+                                        <input type="text" name="id_idMod" class="form-control" id="id_idMod" readonly>
+                                    </div>
+                                    <div class="col col-3">
+                                        <label id="style_tit">Id Ref. Mvto.</label>
+                                        <input type="text" name="id_idRef" class="form-control" id="id_idRef" readonly>
+                                    </div>
+                                </div>
+                                <div class="col col-12">
+                                    <label id="style_tit">Descripción</label>
+                                    <input type="text" name="id_Glosa" class="form-control" id="id_Glosa" disabled="true">
+                                </div>
+                                <div class="col col-12">
+                                    <label id="style_tit">Monto Movimiento</label>
+                                    <input type="text" name="id_Mtomov" class="form-control" id="id_Mtomov" disabled="true">
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-sm">Posponer</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger btn-sm" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+                </div>
+
+            </form>
+
+        </div>
+
+    {% else %}
+        <h2>ATENCIÓN. No existen registros para Pago.</h2>
+    {% endif %}
+
+    <div class="form-group">
+        <div id="outer">
+            <div class="inner"><a href="{% url 'gestionHogar' %}" class="btn btn-primary btn-sm button-width">Inicio</a></div>
+        </div>
+    </div>
+
+{%  endblock %}

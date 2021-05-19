@@ -1,0 +1,66 @@
+{% extends "Superior/fmhbaseOpciones.html" %}
+
+{% block title %}Mensaje{% endblock %}
+
+{% block content %}
+
+{% include "superior/fmhbootstrap.html" %}
+
+{% load static %}
+<style>
+
+    .contPrincipal{
+        padding-top: 20px;
+    }
+
+    .first{
+        text-align: center;
+    }
+
+    .second{
+        text-align: center;
+        font: normal 25px Trebuchet MS;
+        padding-top: 30px;
+        color: black;
+    }
+
+</style>
+
+
+<!-- Sub-Titulo -->
+<div class="row" id="barraSubTitulo">
+    <div class="col" id="primera">
+        {{ msgTitulo }}
+    </div>
+</div>
+<br>
+
+<body>
+    <div class="container contPrincipal">
+        <div class="row">
+            <div class="col col-3 first">
+                {% if tipMsg == 'S' %}
+                    <img src="{% static 'images/Stop.jpg' %}" width="140" height="130px"/>
+                {% elif tipMsg == 'O' %}
+                    <img src="{% static 'images/visto_bueno.jpg' %}" width="140" height="130px"/>
+                {% else %}
+                    <img src="{% static 'images/Warning.jpg' %}" width="140" height="130px"/>
+                {% endif %}
+            </div>
+            <div class="col col-8 second alert alert-info" role="alert">
+                {{ msgSistema }}
+            </div>
+        </div>
+        <br>
+        <div class="row first">
+            <div class="col col-3">
+                <a href="{% url 'gestionHogar' %}" class="btn btn-primary button-width">Inicio</a>
+            </div>
+            <div class="col col-8">
+            </div>
+        </div>
+    </div>
+
+</body>
+
+{%  endblock %}

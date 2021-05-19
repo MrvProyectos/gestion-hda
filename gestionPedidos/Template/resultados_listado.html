@@ -1,0 +1,135 @@
+{% load static %} 
+<html>
+<!-- G:/Boostrap/Table_Fixed_Header -->
+<head>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/perfect-scrollbar/perfect-scrollbar.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <!--===============================================================================================-->
+</head>
+
+<style>
+    #barra{
+        max-width: 100%;
+        background-color:rgb(75, 73, 73);
+        text-align:initial;
+        font-size: 24px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color:rgb(187, 174, 174);
+        padding: 15px;
+    }
+
+</style>
+
+<body>
+
+    {% if listado %}
+
+        <div class="container" id="barra">
+            <p>Consulta de Artículos</p>
+        </div>
+
+        <div class="limiter w-75 p-3">
+            <div class="container-table100">
+                <div class="wrap-table100">
+                    <div class="table100 ver1 m-b-110">
+                        <div class="table100-head">
+                            <!-- encabezado -->
+                            <table>
+                                <thead>
+                                    <tr class="row100 head">
+                                        <th class="cell100 column1">Id#</th>
+                                        <th class="cell100 column2">Nombre</th>
+                                        <th class="cell100 column3">Seccion</th>
+                                        <th class="cell100 column4">Precio</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        
+                        <!-- Detalle de registros -->
+                        <div class="table100-body js-pscroll">
+                            <table>
+                                <tbody>
+                                    {% for lista in listado %}
+                                    <tr class="row100 body">
+                                        <td class="cell100 column1">{{lista.id}}</td>
+                                        <td class="cell100 column2">{{lista.nombre}}</td>
+                                        
+                                        {% if lista.seccion == 'Deportes1' %}
+                                            <td class="cell100 column3">{{lista.seccion}}</td>
+                                        {% elif lista.seccion == 'Deportes' %}
+                                            <td class="cell100 column3">Super Extremo</td>
+                                        {% else %}
+                                            <td class="cell100 column3">Extremo</td>
+                                        {% endif %}
+
+                                        {% if lista.precio > 20000 %}
+                                            <td class="cell100 column4">0</td>
+                                        {% else %}
+                                            <td class="cell100 column4">{{lista.precio}}</td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Boton volver a Busqueda de Productos -->
+                        <div class="form-group">
+                        <div class="table100-footer">
+                            <table>
+                                <tbody>
+                                    <tr class="row100 body">
+<!--                                      <td class="cell100 column1"><a href="{% url 'buscaProd' %}"><img src="{% static 'images/borrar.jpg' %}" height="20px" width="20px"/></a></td>-->
+                                        <td align="center" class="cell100 column1"><a href="{% url 'buscaProd' %}" class="btn btn-primary btn-sm" role="button">Consulta Productos</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p>No existe articulo</p>
+    {% endif %}
+
+<!--===============================================================================================-->	
+<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script>
+	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/select2/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/perfect-scrollbar/perfect-scrollbar.min.js' %}"></script>
+	<script>
+		$('.js-pscroll').each(function(){
+			var ps = new PerfectScrollbar(this);
+
+			$(window).on('resize', function(){
+				ps.update();
+			})
+		});
+			
+		
+    </script>
+    
+<!--===============================================================================================-->
+    <script src="{% static 'js/main.js' %}"></script>
+    
+</body>
+</html>

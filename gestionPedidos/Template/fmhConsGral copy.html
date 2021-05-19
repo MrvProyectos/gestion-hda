@@ -1,0 +1,484 @@
+{% extends "Superior/fmhbaseOpciones.html" %}
+
+{% block title %}Panel de Consultas{% endblock %}
+
+{% load humanize %}
+
+{% block content %}
+
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+
+<style>
+
+    #titModulos{
+        background-color: rgb(199, 192, 183);
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        border-radius: 4px;
+        height: 22px;
+        padding-right: 7px;
+        padding-top: 4px;
+    }
+
+    .groupOne{
+        border-style:solid;
+        color: gray;
+    }
+
+    /* Tabla INGRESOS */
+    #scrollTableIng table{
+        max-width: 100%;
+        font-size: 10px;
+        border: 1px solid gray;
+    }
+
+    #scrollTableIng{
+        float: left;
+        overflow-y: scroll;
+        height: 125px;
+        max-width: 100%;
+    }
+
+    /* Tabla MOVIMIENTOS */
+    #scrollTableMov table{
+        max-width: 100%;
+        font-size: 10px;
+        border: 1px solid gray;
+    }
+
+    #scrollTableMov{
+        margin: auto;
+        overflow-y: scroll;
+        height: 220px;
+        max-width: 100%;
+    }
+
+    /* Tabla Pagos */
+    #scrollTablePag table{
+        max-width: 100%;
+        font-size: 10px;
+        border: 1px solid gray;
+    }
+
+    #scrollTablePag{
+        margin: auto;
+        overflow-y: scroll;
+        height: 300px;
+        max-width: 100%;
+    }
+
+    thead th{
+        position: sticky;
+        top: 0;
+        background-color: rgb(93, 125, 161);
+        color: rgb(248, 248, 244);
+    }
+
+    #alingRigth{
+        text-align: right;
+        padding-right: 5px;
+    }
+
+    .Idfuentes{
+        font-size: 12px;
+        max-width: 85%;
+        margin: auto;
+    }
+
+    .separa{
+        padding-top: 4px;
+    }
+
+    .separaTitModulo{
+        padding-bottom: 5px;
+    }
+
+    #style_tit{
+        float: left;
+        color: rgb(53, 40, 40);
+        font: normal 11px Trebuchet MS;
+        padding-top: 5px;
+        margin-right: 4px;
+        color: black;
+    }
+
+    #style_field{
+        float: left;
+    }
+
+    #style_contexto{
+        padding-top: 0px;
+        color: rgb(5, 141, 5);
+        font: normal 11px Trebuchet MS;
+    }
+
+    #style_Button{
+        float: left;
+        padding-left: 5px;
+    }
+
+    #pagopdte{
+        color: red;
+    }
+    
+    #pagopag{
+        color: green;
+    }
+
+    /* Grafico Estadistico */
+    .highcharts-data-table table {
+        font-family: Verdana, sans-serif;
+        border-collapse: collapse;
+        border: 1px solid #EBEBEB;
+        margin: 10px auto;
+        text-align: center;
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .highcharts-data-table caption {
+        padding: 1em 0;
+        font-size: 1.2em;
+        color: #555;
+    }
+
+    .highcharts-data-table th {
+        font-weight: 600;
+        padding: 0.5em;
+    }
+
+    .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+        padding: 0.5em;
+    }
+
+    .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+        background: #f8f8f8;
+    }
+
+    .highcharts-data-table tr:hover {
+        background: #f1f7ff;
+    }
+
+    #contenedor{
+        height: 250px;
+    }
+
+</style>
+
+<div class="form-group">
+    <div class="container">
+        <form action="/fmhConsGral/" method="GET">
+            {% csrf_token %}
+            <div class="row separa">
+                <!-- Periodo -->
+                <div class="col col-2">
+                    <div id="style_tit">
+                        <label>Periodo</label>
+                    </div>
+                    <div id="style_field">
+                        {{ form.periodo.errors }}
+                        {{ form.periodo }}
+                    </div>
+                </div>
+                <!-- Año -->
+                <div class="col col-3">
+                    <div id="style_tit">
+                        <label>Mes</label>
+                    </div>
+                    <div id="style_field">
+                        {{ form.meses.errors }}
+                        {{ form.meses }}
+                    </div>
+                    <div id="style_Button">
+                        <input class="btn btn-primary btn-md" type="submit" value="Consultar">
+                    </div>
+                </div>
+                <!-- envia informacion al formulario -->
+                <div class="col col-7">
+                    <div id="style_tit">
+                        <label>Periodo Consultado : </label>
+                    </div>
+                    <div id="style_contexto">
+                        <strong>{{ periodo }}</strong>
+                        <a href="{% url 'gestionHogar' %}" class="btn btn-primary btn-md" style="width: 70px;">Inicio</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="{% static 'lib/highcharts-8.1.2/highcharts.js' %}"></script>
+<script src="{% static 'lib/highcharts-8.1.2/highcharts.src.js' %}"></script>
+<script src="{% static 'lib/highcharts-8.1.2/modules/exporting.js' %}"></script>
+<script src="{% static 'lib/highcharts-8.1.2/modules/export-data.js' %}"></script>
+<script src="{% static 'lib/highcharts-8.1.2/modules/data.js' %}"></script>
+<script src="{% static 'lib/highcharts-8.1.2/modules/accessibility.js' %}"></script>
+
+<!-- INGRESOS Y MOVIMIENTOS -->
+<div class="form-group">
+    <div class="container separaTitModulo">
+        <div class="row">
+            <div id="titModulos" class="col col-5"><label>Ingresos</label></div>
+            <div id="titModulos" class="col col-7"><label>Movimientos</label></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col col-5">
+                <!-- Ingresos -->
+                <div id="scrollTableIng">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>&nbsp;</th>
+                                <th>Código</th>
+                                <th>&nbsp;</th>
+                                <th>Descripción</th>
+                                <th>&nbsp;</th>
+                                <th id="alingRigth">Monto</th>
+                                <th>&nbsp;</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for listado in listing %}
+                            <tr>
+                                <td><strong>{{ listado.id }}</strong></td>
+                                <td>&nbsp;</td>
+                                {% if listado.ingcodtipo == 'ING01' %}
+                                    <td>Sueldos</td>
+                                    <td>&nbsp;</td>
+                                    {% elif listado.ingcodtipo == 'ING02' %}
+                                    <td>Retornos</td>
+                                    <td>&nbsp;</td>
+                                    {% elif listado.ingcodtipo == 'ING03' %}
+                                    <td>Bonos</td>
+                                    <td>&nbsp;</td>
+                                    {% else %}
+                                    <td>Varios</td>
+                                {% endif %}
+                                <td>{{ listado.ingGlosa }}</td>
+                                <td>&nbsp;</td>
+                                <td id="alingRigth"><strong>{{ listado.ingValor|intcomma}}</strong></td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col col-7">
+                <!-- Movimientos -->
+                <div id="scrollTableMov">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Código</th>
+                                <th>Descripción</th>
+                                <th id="alingRigth">Monto</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Ciclo For -->
+                            {% for listados in listmov %}
+                            <tr>
+                                <td><strong>{{ listados.id }}</strong></td>
+                                {% if listados.movcodtipo == 'GTO01' %}
+                                    <td>Financieros</td>
+                                {% elif listados.movcodtipo == 'GTO02' %}
+                                    <td>Fijos</td>
+                                {% elif listados.movcodtipo == 'GTO03' %}
+                                    <td>Autopistas</td>
+                                {% elif listados.movcodtipo == 'GTO04' %}
+                                    <td>Tecnología</td>
+                                {% else %}
+                                    <td>Otros</td>
+                                {% endif %}
+                                <td>{{ listados.movglosa }}</td>
+                                <td id="alingRigth"><strong>{{ listados.movmto|intcomma }}</strong></td>
+                                {% if listados.movestado == 0 %}
+                                    <td id="pagopdte"><strong>Pendiente</strong></td>
+                                {% else %}
+                                    <td id="pagopag"><strong>Pagado</strong></td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                            <!-- Fin Ciclo -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- GRAFICO SALDO Y PAGOS -->
+<div class="form-group">
+    <div class="container separaTitModulo">
+        <div class="row">
+            <div id="titModulos" class="col col-4"><label>Saldos</label></div>
+            <div id="titModulos" class="col col-8"><label>Pagos</label></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col col-4">
+                <div id="contenedor"></div>
+            
+                <script>
+                    Highcharts.chart('contenedor', {
+                        chart: {
+                            type: 'line'
+                        },
+                        title: {
+                            text: '<b>Estadística {{periodoGR}}</b>'
+                    },
+                        subtitle: {
+                            text: '<span style="color: green">Saldos Mensuales</span>'
+                    },
+                        xAxis: {
+                            categories: [
+                                'Ene',
+                                'Feb',
+                                'Mar',
+                                'Abr',
+                                'May',
+                                'Jun',
+                                'Jul',
+                                'Ago',
+                                'Sep',
+                                'Oct',
+                                'Nov',
+                                'Dic',
+                            ],
+                    crosshair: true
+                        },
+                        yAxis: {
+                            min: 0,                
+                            title: {
+                                text: '<span style="font-size:16px">Saldos $</span>'
+                            },
+                            crosshair: {
+                                width: 1,
+                                color: 'green'
+                            }
+                        },
+                        tooltip: {
+                            headerFormat: '<b><span style="font-size:10px">{point.key}</span></b><table>',
+                            pointFormat: '<tr><td style="color:{series.color};font-size:10px;padding:0">{series.name}: </td>' +
+                                '<td style="font-size:10px;padding:5"><b>${point.y:.0f}</b></td></tr>',
+                            footerFormat: '</table>',
+                            shared: true,
+                            useHTML: true
+                        },
+                        plotOptions: {
+                            column: {
+                                pointPadding: 0.2,
+                                borderWidth: 0
+                            }
+                        },
+                        series: [{
+                            name: 'Saldo',
+                            showInLegend: true,
+                            colorByPoint: true,
+                            data: {{ saldos }}
+                            }]
+                    });
+
+                </script>
+            </div>
+
+            <div class="col col-8">
+                <!-- Pagos -->
+                <div id="scrollTablePag">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Dcto. Referencia</th>
+                                <th>Fecha Pago</th>
+                                <th>Desc.</th>
+                                <th id="alingRigth">Mto. Pagado</th>
+                                <th>Tipo Dcto.</th>
+                                <th>N° Dcto.</th>
+                                <th>MP</th>
+                                <th>Banco</th>
+                                <th>N° Cheque</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Ciclo For -->
+                            {% for lista in listpag %}
+                            <tr>
+                                <td><strong>{{ lista.id }}</strong></td>
+                                <td>{{ lista.pagidrefmov }}</td>
+                                <td>{{ lista.pagfecha }}</td>
+                                <td>{{ lista.pagglosamov }}</td>
+                                <td id="alingRigth"><strong>{{ lista.pagmtopago|intcomma }}</strong></td>
+                                {% if lista.pagtipdcto == '000' %}    <td></td>
+                                {% elif lista.pagtipdcto == 'BOL' %}  <td>Boleta</td>
+                                {% elif lista.pagtipdcto == 'FAC' %}  <td>Factura</td>
+                                {% elif lista.pagtipdcto == 'OTR' %}  <td>Otros Dcto.</td>
+                                {% else %}                            <td></td>
+                                {% endif %}
+
+                                {% if lista.pagnumdocu > 0 %} <td>{{ lista.pagnumdocu }}</td>
+                                {% else %}                    <td></td>
+                                {% endif %}
+
+                                {% if lista.pagMedpag == '000' %}    <td></td>
+                                {% elif lista.pagMedpag == 'EFE' %}  <td>Efectivo</td>
+                                {% elif lista.pagMedpag == 'DEB' %}  <td>Debito</td>
+                                {% elif lista.pagMedpag == 'CRD' %}  <td>Credito</td>
+                                {% elif lista.pagMedpag == 'TRF' %}  <td>Transferencia Bancaria</td>
+                                {% elif lista.pagMedpag == 'CHQ' %}  <td>Cheque</td>
+                                {% elif lista.pagMedpag == 'NCR' %}  <td>Nota Credito</td>
+                                {% else %}                            <td></td>
+                                {% endif %}
+
+                                {% if lista.pagCodbco   == '000' %} <td></td>
+                                {% elif lista.pagCodbco == '001' %} <td>Banco De Chile</td>
+                                {% elif lista.pagCodbco == '009' %} <td>Banco Internacional</td>
+                                {% elif lista.pagCodbco == '014' %} <td>Scotiabank Chile</td>
+                                {% elif lista.pagCodbco == '016' %} <td>Banco De Credito E Inversiones</td>
+                                {% elif lista.pagCodbco == '028' %} <td>Banco Bice</td>
+                                {% elif lista.pagCodbco == '031' %} <td>Hsbc Bank-Chile</td>
+                                {% elif lista.pagCodbco == '037' %} <td>Banco Santander-Chile</td>
+                                {% elif lista.pagCodbco == '039' %} <td>Itaú Corpbanca</td>
+                                {% elif lista.pagCodbco == '049' %} <td>Banco Security</td>
+                                {% elif lista.pagCodbco == '051' %} <td>Banco Falabella</td>
+                                {% elif lista.pagCodbco == '053' %} <td>Banco Ripley</td>
+                                {% elif lista.pagCodbco == '055' %} <td>Banco Consorcio</td>
+                                {% elif lista.pagCodbco == '504' %} <td>Scotiabank Azul Ex-Bbva</td>
+                                {% else %}                          <td></td>
+                                {% endif %}
+                            
+                                <td>{{ lista.pagNumchq }}</td>
+
+                                {% if lista.pagestado == 0 %} <td id="pagopdte"><strong>Pendiente</strong></td>
+                                {% else %}                    <td id="pagopag"><strong>Pagado</strong></td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                            <!-- Fin Ciclo -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%  endblock %}

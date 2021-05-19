@@ -1,0 +1,46 @@
+{% load static %} 
+<html>
+
+<head>
+
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/perfect-scrollbar/perfect-scrollbar.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <!--===============================================================================================-->
+</head>
+
+
+<table width="100%" class="table table-striped table-bordered table-hover" >
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {%  for art in consultas %}
+        <tr>
+            {% for i in art %}
+            <td>
+                {{i}}
+            </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</html>

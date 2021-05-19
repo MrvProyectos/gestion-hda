@@ -1,0 +1,72 @@
+@import url(https://fonts.googleapis.com/css?family=Oswald);
+@import url(https://fonts.googleapis.com/css?family=Quattrocento);
+.imging01 {
+  font-family: 'Quattrocento', Arial, sans-serif;
+  position: relative;
+  overflow: hidden;
+  margin: 10px;
+  min-width: 230px;
+  max-width: 315px;
+  width: 100%;
+  color: #141414;
+  text-align: left;
+  line-height: 1.4em;
+  font-size: 14px;
+}
+.imging01 * {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: all 0.35s ease;
+  transition: all 0.35s ease;
+}
+.imging01 img {
+  max-width: 100%;
+  vertical-align: top;
+  border-radius: 3%;
+}
+.imging01 figcaption {
+  position: absolute;
+  top: calc(77%);
+  width: 100%;
+  background-color: #ffffff;
+  padding: 15px 25px 65px;
+}
+.imging01 figcaption:before {
+  position: absolute;
+  content: '';
+  z-index: 2;
+  bottom: 100%;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background-image: -webkit-linear-gradient(top, transparent 0%, #ffffff 100%);
+  background-image: linear-gradient(to bottom, transparent 0%, #ffffff 100%);
+}
+.imging01 h3,
+.imging01 p {
+  margin: 0 0 10px;
+}
+.imging01 h3 {
+  font-weight: 300;
+  font-size: 1.4em;
+  line-height: 1.2em;
+  font-family: 'Oswald', Arial, sans-serif;
+  text-transform: uppercase;
+}
+.imging01 p {
+  font-size: 0.9em;
+  letter-spacing: 1px;
+  opacity: 0.9;
+}
+.imging01 a {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+.imging01:hover figcaption,
+.imging01.hover figcaption {
+  top: 50px;
+}

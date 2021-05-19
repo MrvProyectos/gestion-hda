@@ -1,0 +1,48 @@
+{% extends "Superior/fmhbaseOpciones.html" %}
+
+{% block title %}Verificacion{% endblock %}
+
+{% block content %}
+
+<!-- Sub-Titulo -->
+<div class="row" id="barraSubTitulo">
+    <div class="col col-6" id="primera">CONFIRMA ELIMINACIÓN</div>
+</div>
+
+<br>
+
+<div class="container">
+
+    <p>Registro Id.:<b> {{verifId}} </b></p>
+    <p>Periodo: <b> {{periodoAngo}} </b> 
+        Mes: 
+            {% if periodoMes == 1 %} <strong>Enero</strong>
+            {% elif periodoMes == 2 %} <strong>Febrero</strong>
+            {% elif periodoMes == 3 %} <strong>Marzo</strong>
+            {% elif periodoMes == 4 %} <strong>Abril</strong>
+            {% elif periodoMes == 5 %} <strong>Mayo</strong>
+            {% elif periodoMes == 6 %} <strong>Junio</strong>
+            {% elif periodoMes == 7 %} <strong>Julio</strong>
+            {% elif periodoMes == 8 %} <strong>Agosto</strong>
+            {% elif periodoMes == 9 %} <strong>Septiembre</strong>
+            {% elif periodoMes == 10 %} <strong>Octubre</strong>
+            {% elif periodoMes == 11 %} <strong>Noviembre</strong>
+            {% elif periodoMes == 12 %} <strong>Diciembre</strong>
+            {% endif %}
+    </p>
+
+    <p><h2>Esta seguro de eliminar Registro ?</h2></p>
+    <br>
+    
+    {% if opcion == 'ING' %}
+        <a href="{% url 'eliminarBDIng' verifId %}" class="btn btn-danger button-width">Eliminar</a>
+        <a href="{% url 'vuelveGIngreso' %}" class="btn btn-primary button-width">Cancelar</a>
+    {% else %}
+        <a href="{% url 'eliminarBDMov' verifId %}" class="btn btn-danger button-width">Eliminar</a>
+        <a href="{% url 'vuelveGMovimie' %}" class="btn btn-primary button-width">Cancelar</a>
+    {% endif %}
+    <hr>
+
+</div>
+
+{%  endblock %}

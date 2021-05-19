@@ -1,0 +1,404 @@
+{% load static %} 
+<html>
+<head>
+    <title>Gestion Hogar</title>
+</head>
+
+<!-- Incrustar Barra Superior -->
+{% include "superior/fmhbarra_titulo.html" %}
+
+<style>
+    #grupo1{
+        padding-top: 20px;
+    }
+
+    #grupo2{
+        padding: 28px;
+    }
+
+    #menu1{
+        background:rgb(194, 188, 183);
+        border-radius: 3%;
+    }
+
+    #fondo {
+        margin: 0; 
+        background: white;
+    }
+
+    #menu_gestion{
+        text-align: left;
+    }
+
+    h6{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        text-align: left;
+    }
+
+    /* Propiedades de lista */
+    div #menu-a {
+        width: auto;
+        margin: 10px auto;
+    }
+
+    #menu-a ul {
+        margin: 0;
+        padding: 2px;
+    }
+
+    #menu-a ul li {
+        float:initial;
+        background: #ddd;
+        width: auto;
+        height: 50px;
+        border: solid 1px rgba(122, 119, 119, 0.158);
+        margin: -1px -1px 0 0;
+    }
+
+    #menu-a ul li a {
+        color: rgb(131, 23, 23);
+        text-decoration: none;
+        font: normal 13px Trebuchet MS;
+        display: block;
+        line-height: 50px;
+        width: auto;
+        text-align: left;
+        padding-left: 7px;
+    }
+
+    #menu-a ul li a:hover {
+        color: black;
+        background: #c4c4c4;
+    }
+
+    #a1{
+        padding: 5px;
+        font-size: 10px;
+    }
+
+    #a1 :hover{
+        color: black;
+        background: #c4c4c4;
+    }
+
+    .idModulos{
+        font: normal 14px Trebuchet MS;
+        padding: 5px;
+        text-align: center;
+        color: black;
+        text-shadow: rgb(221, 228, 126);
+    }
+
+    #style_tit{
+        color: black;
+        font: normal 12px Trebuchet MS;
+        padding-top: 5px;
+    }
+
+    #modalinirep{
+        background-color: rgb(185, 182, 182);
+    }
+
+    #textModalLabel{
+        color: rgb(6, 38, 184);
+        font: normal 20px Trebuchet MS;
+        text-align: center;
+    }
+
+</style>
+
+<!-- Funciones Modal -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<body id="fondo">
+    <!-- Menu Principal Linea 1 -->
+    <div class="form-group" id="grupo1">
+    <div class="container">
+        <div class="row">
+            <div class="col col-3" id="menu1">
+                <p class="idModulos">MODULOS</p>
+
+                    <hr>
+                    <div id="menu-a">
+                    <ul>
+                        <!-- Módulo Inicialización y Cierre de Período -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Período
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <div id="a1"><a class="dropdown-item" href="" data-toggle="modal" data-target="#exampleModal">Inicializa Período</a></div>
+                                <div id="a1"><a class="dropdown-item" href="{% url 'suspendeSesion' %}">Suspención Período</a></div>
+                                <div id="a1"><a class="dropdown-item" href="" data-toggle="modal" data-target="#cierreProc">CIERRE PROCESO</a></div>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <!-- Modulo Actualizaciones -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Actualizaciones
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <div id="a1"><a class="dropdown-item" href="{% url 'gestionIngreso' %}">Ingresos</a></div>
+                                <div id="a1"><a class="dropdown-item" href="{% url 'gestionMovimientos' 3 %}">Movimientos</a></div>
+                                <div id="a1"><a class="dropdown-item" href="" data-toggle="modal" data-target="#replicaPer">Replica Periodo Cerrado</a></div>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <!-- Modulo Consultas -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Consultas
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <div id="a1"><a class="dropdown-item" href="{% url 'consulta_gral' 0 0 %}">Panel Global de Consulta</a></div>
+                            </div>
+                        </div>
+                    </ul>
+                    </div>
+            </div>
+
+            <div class="col col-3" id="menu2">
+                <figure class="imging01">
+                    <img src="{% static 'images/ingreso.jpg' %}" width="310" height="190px" alt="ingreso" />
+                    <figcaption>
+                        <h3>Ingresos</h3>
+                        <p>Los ingresos son todas las entradas de dinero que el hogar recibe, sueldos, bonos, etc.</p>
+                    </figcaption>
+                    <a href="{% url 'IngresoHab' %}"></a>
+                </figure>
+            </div>
+
+            <div class="col col-3" id="menu3">
+                <figure class="imging01">
+                    <img src="{% static 'images/movimientos2.jpg' %}" width="310" height="190px" alt="movimientos" />
+                    <figcaption>
+                        <h3>Movimientos</h3>
+                        <p>Haga ingreso de sus gastos (Fijos, Financieros, Etc.).</p>
+                    </figcaption>
+                    <a href="{% url 'IngresoDeb' %}"></a>
+                </figure>
+            </div>
+
+            <div class="col col-3" id="menu4">
+                <figure class="imging01">
+                    <img src="{% static 'images/pagos.jpg' %}" width="310" height="190px" alt="pagos" />
+                    <figcaption>
+                        <h3>Pagos</h3>
+                        <p>Módulo pago de servicios.</p>
+                    </figcaption>
+                    <a href="{% url 'listaPagPend' %}"></a>
+                </figure>    
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Menu Principal Linea 2 -->
+    <div class="form-group" id="grupo2">
+        <div class="container">
+            <div class="row">
+                <div class="col col-3" id="menu5"></div>
+
+                <div class="col col-3" id="menu6">
+                    <figure class="imging01">
+                        <img src="{% static 'images/saldoFinal.jpg' %}" width="310" height="190px" alt="saldo" />
+                        <figcaption>
+                            <h3>Gastos</h3>
+                            <p>Revisión de gastos, detalle mensual y acumulado anual por concepto.</p>
+                        </figcaption>
+                        <a href="{% url 'estadGastos' %}"></a>
+                    </figure>    
+                </div>
+
+                <div class="col col-3" id="menu7">
+                    <figure class="imging01">
+                        <img src="{% static 'images/estadistica.jpg' %}" width="310" height="190px" alt="saldo" />
+                        <figcaption>
+                            <h3>Evolución</h3>
+                            <p>Evolución mensual sobre movimientos de Ingresos, Gastos y Saldos.</p>
+                        </figcaption>
+                        <a href="{% url 'estadistica' %}"></a>
+                    </figure>
+                </div>
+                <div class="col col-3" id="menu8"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Inicializa -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="textModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog" role="document">
+        <div id="modalinirep" class="modal-content">
+            <br>
+            <br>        
+            <div class="modal-header">
+            <h1 class="modal-title" id="textModalLabel">Inicializar Período Proceso</h1>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form action="/fmhCreasession/" method="POST">
+                    {% csrf_token %}
+                    <div class="container">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6"><label>Año:</label></div>
+                                <div class="col-md-6"><label>Mes:</label></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select class="form-control" name="periodoango" type="text" required id="perango">
+                                        <option value="2020">2020</option>
+                                        <option value="2021">2021</option>
+                                        <option value="2022">2022</option>
+                                        <option value="2023">2023</option>
+                                        <option value="2024">2024</option>
+                                        <option value="2025">2025</option>
+                                        <option value="2026">2026</option>
+                                        <option value="2027">2027</option>
+                                        <option value="2028">2028</option>
+                                        <option value="2029">2029</option>
+                                        <option value="2030">2030</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-control" name="periodomes" type="text" required id="ingmes">
+                                        <option value="01">Enero</option>
+                                        <option value="02">Febrero</option>
+                                        <option value="03">Marzo</option>
+                                        <option value="04">Abril</option>
+                                        <option value="05">Mayo</option>
+                                        <option value="06">Junio</option>
+                                        <option value="07">Julio</option>
+                                        <option value="08">Agosto</option>
+                                        <option value="09">Septiembre</option>
+                                        <option value="10">Octubre</option>
+                                        <option value="11">Noviembre</option>
+                                        <option value="12">Diciembre</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <input type="submit" value="Inicializar" class="btn btn-primary btn-lg">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">Inicio</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Modal Replica Movimientos -->
+    <div class="modal fade" id="replicaPer" tabindex="-1" role="dialog" aria-labelledby="textModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog" role="document">
+        <div id="modalinirep" class="modal-content">
+            <br>
+            <br>
+            <br>
+            <div class="modal-header">
+            <h1 class="modal-title" id="textModalLabel">Selección del Período</h1>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <form action="/fmhreplica/" method="GET">
+                    {% csrf_token %}
+                    <div class="container">
+                        <div class="form-group">
+                            <div class="row">
+                                <!-- Periodo Años, Mes -->
+                                <div id="style_tit" class="col col-6"><label>Período</label></div>
+                                <div class="col col-6"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-6">
+                                    {{ form.periodo.errors }}
+                                    {{ form.periodo }}
+                                </div>
+                                <div class="col col-6"></div>
+                            </div>
+                            <div class="row">
+                                <!-- Periodo Años, Mes -->
+                                <div id="style_tit" class="col col-6"><label>Mes</label></div>
+                                <div class="col col-6"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-6">
+                                    {{ form.meses.errors }}
+                                    {{ form.meses }}
+                                </div>
+                                <div class="col col-6"></div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <input type="submit" value="Replicar" class="btn btn-primary btn-lg">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <marquee width=60%>
+                <h5 style="color: darkblue;">Nota: El último período cerrado será copiado a la opión seleccionada...</h5>
+                </marquee>
+                <button type="button" class="btn btn-danger btn-md" data-dismiss="modal">CANCELAR</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Modal Cierre de Proceso -->
+    <div class="modal fade" id="cierreProc" tabindex="-1" role="dialog" aria-labelledby="textModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog" role="document">
+        <div id="modalinirep" class="modal-content">
+            <br>
+            <br>
+            <br>
+            <div class="modal-header">
+            <h1 class="modal-title" id="textModalLabel">Cierre Proceso</h1>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="form-group">
+                        <div class="row">
+                            <!-- Cierre -->
+                            <div id="style_tit" class="col col-6"><label>Seguro desea Cerrar Proceso Actual</label></div>
+                            <div class="col col-6"></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <a class="btn btn-primary btn-lg" href="{% url 'cierreProc' %}">CIERRE PROCESO</a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger btn-md" data-dismiss="modal">CANCELAR</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+<!--===============================================================================================-->	
+<script src="{% static 'js/main.js' %}"></script>
+<!--===============================================================================================-->
+
+{% include "Superior/fmhfooter.html" %}
+
+</body>
+</html>

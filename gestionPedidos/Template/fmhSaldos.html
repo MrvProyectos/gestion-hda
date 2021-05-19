@@ -1,0 +1,174 @@
+{% extends "Superior/fmhbaseOpciones.html" %}
+
+{% block title %}Saldos{% endblock %}
+
+{% load humanize %}
+
+{% block content %}
+
+<style>
+
+    #scrollTable table{
+        max-width: 100%;
+        font-size: 12px;
+        border: 1px solid gray;
+    }
+
+    #scrollTable{
+        margin: auto;
+        overflow-y: scroll;
+        height: 360;
+        max-width: 80%;
+    }
+
+    thead th{
+        position: sticky;
+        top: 0;
+        background-color: rgb(93, 125, 161);
+        color: rgb(248, 248, 244);
+    }
+
+    #alingRigth{
+        text-align: right;
+        padding-right: 5px;
+    }
+
+    .Idfuentes{
+        font-size: 12px;
+        max-width: 85%;
+        margin: auto;
+    }
+
+    .idFondo{
+        background-color: bisque;
+    }
+
+    .contleft{
+        float: left;
+        width: fit-content;
+        background-color: gray snow;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        border-style: groove;
+        border-radius: 7px;
+        height: 430px;
+        border-color: whitesmoke;
+        margin-left: 12px;
+    }
+
+    #style_tit{
+        color: rgb(53, 40, 40);
+        font: normal 12px Trebuchet MS;
+        padding-top: 5px;
+    }
+
+</style>
+
+<!-- Funcion para checkbox general -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    
+<!-- Sub-Titulo -->
+    <div class="row" id="barraSubTitulo">
+        <div class="col col-1" id="primera">Consulta SALDOS</div>
+    </div>
+    <br>
+
+    <div class="container contleft">
+
+        <form action="/fmhSaldosPeriodo/" method="GET">
+            {% csrf_token %}
+
+            <!-- Periodo Años -->
+            <div id="style_tit">
+                <label>Período</label>
+            </div>
+            <div>
+                {{ form.periodo.errors }}
+                {{ form.periodo }}
+            </div>
+
+            <!-- Meses -->
+            <div id="style_tit">
+                <label>Mes</label>
+            </div>
+            <div>
+                {{ form.meses.errors }}
+                {{ form.meses }}
+            </div>
+            <br>
+            <input class="btn btn-primary btn-sm button-width" type="submit" value="Filtrar">
+        </form>
+        <hr>
+    </div>
+
+    <div class="container">
+        {% if listing %}
+        <table class="table Idfuentes">
+            <thead>
+              <tr>
+                <th>#ID</th>
+                <th>Año</th>
+                <th>Mes</th>
+                <th id="alingRigth">Ingresos</th>
+                <th id="alingRigth">Egresos</th>
+                <th id="alingRigth">Saldo Final</th>
+              </tr>
+            </thead>
+            <tbody class="idFondo">
+                {% for listado in listing %}
+                <tr>
+                <td><strong>{{listado.id}}</strong></td>
+                <td>{{listado.sldango}}</td>
+                <td>{{ NombreMes }}</td>
+                <td id="alingRigth"><strong>{{listado.sldingresos|intcomma}}</strong></td>
+                <td id="alingRigth"><strong>{{listado.sldegresos|intcomma}}</strong></td>
+                <td id="alingRigth"><strong>{{listado.sldsaldo|intcomma}}</strong></td>
+                </tr>
+                {%endfor %}
+
+            </tbody>
+        </table>
+        {% else %}
+            <h4>ATENCIÓN. Período sin SALDOS : <strong>{{ PeriodoSld }}</strong></h4>
+        {% endif %}
+
+        <br>
+        {% if listDet %}
+        <div id="scrollTable">
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>#ID</th>
+                <th>Descripción</th>
+                <th id="alingRigth">Ingresos</th>
+                <th id="alingRigth">Egresos</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for listadoDet in listDet %}
+                <tr>
+                <td><strong>{{listadoDet.id}}</strong></td>
+                <td>{{listadoDet.sdeglosa}}</td>
+                <td id="alingRigth">{{listadoDet.sdeingresos|intcomma}}</td>
+                <td id="alingRigth">{{listadoDet.sdeegresos|intcomma}}</td>
+                <td></td>
+                </tr>
+                {%endfor %}
+
+            </tbody>
+        </table>
+        </div>
+
+        {% endif %}
+
+        <hr>
+
+        <div class="form-group">
+            <div id="outer">
+                <div class="inner"><a href="{% url 'gestionHogar' %}" class="btn btn-primary btn-sm button-width">Inicio</a></div>
+            </div>
+        </div>
+
+    </div>
+
+{%  endblock %}

@@ -1,0 +1,103 @@
+{% load static %} 
+<html>
+<!-- G:/Boostrap/Table_Fixed_Header -->
+<head>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/perfect-scrollbar/perfect-scrollbar.css' %}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <!--===============================================================================================-->
+</head>
+
+<body>
+
+    <div class="form-group">
+    <p> Estas buscando: <strong>{{query}}</strong></p>
+    </div>
+
+    {% if articulos %}
+
+        <p>Articulos econtrados: {{articulos|length}} articulos</p>
+
+        <div class="limiter">
+            <div class="container-table100">
+                <div class="wrap-table100">
+                    <div class="table100 ver1 m-b-110">
+                        <div class="table100-head">
+                            <!-- encabezado -->
+                            <table>
+                                <thead>
+                                    <tr class="row100 head">
+                                        <th class="cell100 column1">Id</th>
+                                        <th class="cell100 column2">Nombre</th>
+                                        <th class="cell100 column3">Seccion</th>
+                                        <th class="cell100 column4">Precio</th>
+                                        <th class="cell100 column5">Elimina</th>
+                                        <th class="cell100 column6">Edita</th>
+                                        <th class="cell100 column7"></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        
+                        <!-- Detalle de registros -->
+                        <div class="table100-body js-pscroll">
+                            <table>
+                                <tbody>
+                                    {% for articulo in articulos %}
+                                    <tr class="row100 body">
+                                        <td class="cell100 column1">{{articulo.id}}</td>
+                                        <td class="cell100 column2">{{articulo.nombre}}</td>
+                                        <td class="cell100 column3">{{articulo.seccion}}</td>
+                                        <td class="cell100 column4">{{articulo.precio}}</td>
+                                        <td class="cell100 column5"><a href="{% url 'eliminar_id' articulo.id %}"><img src="{% static 'images/borrar.jpg' %}" height="28px" width="28px"/></a></td>
+                                        <td class="cell100 column6"><a href="{% url 'actualizaArt_id' articulo.id %}"><img src="{% static 'images/actualiza.jpg' %}" height="34px" width="34px"/></a></td>
+                                        <td class="cell100 column7"></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p>No existe articulo</p>
+    {% endif %}
+
+<!--===============================================================================================-->	
+<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script>
+	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/select2/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/perfect-scrollbar/perfect-scrollbar.min.js' %}"></script>
+	<script>
+		$('.js-pscroll').each(function(){
+			var ps = new PerfectScrollbar(this);
+
+			$(window).on('resize', function(){
+				ps.update();
+			})
+		});
+			
+		
+    </script>
+    
+<!--===============================================================================================-->
+    <script src="{% static 'js/main.js' %}"></script>
+    
+</body>
+</html>

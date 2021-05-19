@@ -1,0 +1,309 @@
+{% extends "Superior/fmhbaseOpciones.html" %}
+
+{% block title %}Pagos{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<!-- Estilos -->
+<style>
+
+    #style_tit{
+        color: rgb(53, 40, 40);
+        font: bold 12px Trebuchet MS;
+        padding-left: 3px;
+    }
+
+    #style_titDer{
+        color: rgb(53, 40, 40);
+        font: bold 12px Trebuchet MS;
+        padding-left: 68px;
+    }
+
+    #id_id{
+        color: red;
+    }
+
+    #id_pagidrefmov{
+        font: normal Trebuchet MS;
+    }
+
+    #id_pagglosamov{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 13px;
+        color: rgb(105, 104, 104);
+    }
+
+    #id_pagMedpag{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 13px;
+        color: rgb(105, 104, 104);
+    }
+
+    #id_pagNumchq{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 13px;
+        color: rgb(105, 104, 104);
+    }
+
+    #id_pagCodbco{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 13px;
+        color: rgb(105, 104, 104);
+    }
+
+    #id_pagtipdcto{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 13px;
+        color: rgb(105, 104, 104);
+    }
+
+    #id_pagnumdocu{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 13px;
+        color: rgb(105, 104, 104);
+    }
+
+    #id_pagmtomov{
+        text-align: right;
+    }
+
+    #id_pagmtopago{
+        font: normal 13px Trebuchet MS;
+        color: black;
+        width: 150px;
+        text-align: right;
+    }
+
+    .button-hig{
+        height: 30px;
+        font-size: 11px;
+    }
+
+    .pagoTotal{
+        font-size: small;
+        color: rgb(6, 129, 6);
+        padding-top: 8px;
+    }
+
+    .groupFive{
+        padding-top: 8px;
+        padding-bottom: 3px;
+        border: 1px solid;
+        border-radius: 7px;
+        border-color: gray;
+    }
+
+</style>
+
+<script>
+
+    function fncTraspasaValor() {
+        if ($('#mtomovchk').prop('checked')) {
+            valMtoMov = document.getElementById('id_pagmtomov').value;
+            document.getElementById('id_pagmtopago').value = valMtoMov;
+        } else {
+            document.getElementById('id_pagmtopago').value = '';
+        }
+    };
+
+</script>
+
+<div id="fondo">
+<div class="row" id="barraSubTitulo">
+    <div class="col col-6" id="primera">PAGO DE DOCUMENTOS</div>
+</div>
+<br>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <!-- Grupo 1 -->
+    <div class="form-group">
+        <div class="container">
+            <!-- ID -->
+            <div class="row">
+                <div class="col col-12">
+                    <label>ID :</label>
+                    {{ form.id.errors }}
+                    {{ form.id }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grupo 2 -->
+    <div class="form-group">
+        <div class="container">
+            <div class="row">
+                <!-- ID de Referencia Movimientos -->
+                <div class="col col-4">
+                    <div id="style_tit">
+                        <label>ID Ref. Mvto.</label>
+                    </div>
+                    {{ form.pagidrefmov.errors }}
+                    {{ form.pagidrefmov }}
+                </div>
+
+                <!-- Fecha de Pago -->
+                <div class="col col-4">
+                    <div id="style_tit">
+                        <label>Fecha de Pago</label>
+                    </div>
+                    <div>
+                        {{ form.pagfecha.errors }}
+                        {{ form.pagfecha }}
+                    </div>
+                </div>
+
+                <!-- Glosa Movimiento -->
+                <div class="col col-4">
+                    <div id="style_tit">
+                        <label>Glosa Movimiento</label>
+                    </div>
+                    {{ form.pagglosamov.errors }}
+                    {{ form.pagglosamov }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Grupo 3 -->
+    <div class="form-group">
+        <div class="container">
+            <div class="row">
+                <!-- Medio de Pago -->
+                <div class="col col-4">
+                    <div id="style_tit">
+                        <label>Medio de Pago</label>
+                    </div>
+                    {{ form.pagMedpag.errors }}
+                    {{ form.pagMedpag }}
+                </div>
+
+                <!-- Nro. Cheque -->
+                <div class="col col-4">
+                    <div id="style_tit">
+                        <label>N° Cheque</label>
+                    </div>
+                    {{ form.pagNumchq.errors }}
+                    {{ form.pagNumchq }}
+                </div>
+
+                <!-- Codigo Banco -->
+                <div class="col col-4">
+                    <div id="style_tit">
+                        <label>Banco</label>
+                    </div>
+                    {{ form.pagCodbco.errors }}
+                    {{ form.pagCodbco }}
+                </div>                
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <!-- Grupo 4 -->
+    <div class="form-group">
+        <div class="container">
+            <div class="row">
+                <!-- Tipo Documento de Pago -->
+                <div class="col col-4">
+                    <div id="style_tit">
+                        <label>Tipo de Documento</label>
+                    </div>
+                    {{ form.pagtipdcto.errors }}
+                    {{ form.pagtipdcto }}
+                </div>
+
+                <!-- Numero Documento -->
+                <div class="col col-4">
+                    <div id="style_tit">
+                        <label>Número Documento</label>
+                    </div>
+                    <div>
+                    {{ form.pagnumdocu.errors }}
+                    {{ form.pagnumdocu }}
+                    </div>
+                </div>
+
+                <!-- Libre -->
+                <div class="col col-4">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <!-- Grupo 5 -->
+    <div class="form-group">
+        <div class="container groupFive">
+            <div class="row">
+                <!-- Monto Movimiento -->
+                <div class="col col-4">
+                    <div id="style_tit">
+                        <label>Monto Movimiento Ing.</label>
+                    </div>
+                    {{ form.pagmtomov.errors }}
+                    {{ form.pagmtomov }}
+                </div>
+
+                <!-- Monto a Pagar -->
+                <div class="col col-4">
+                    <div id="style_titDer">
+                        <label>Monto a Pagar</label>
+                    </div>
+                    {{ form.pagmtopago.errors }}
+                    {{ form.pagmtopago }}
+                    <div class="pagoTotal">
+                        <input type="checkbox" name="mtomovchk" id="mtomovchk" onclick="fncTraspasaValor()">
+                        <label><b>Pago Total</b></label>
+                    </div>
+                </div>
+
+                <!-- Nulo -->
+                <div class="col col-4">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grupo 6 -->
+    <div class="form-group">
+        <div class="container">
+            <div class="row">
+                <!-- Estado de Pago -->
+                <div class="col col-12">
+                    <div id="style_tit">
+                        <label>Marque Estado de Pago</label>
+                    </div>
+                    {{form.pagestado.errors}}
+                    {{form.pagestado}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grupo Btones -->
+    <div class="form-group">
+        <div class="container">
+            <hr>
+            <div class="row">
+                <div class="col col-12">
+                    <button type="submit" class="btn btn-success btn-sm button-width">Pagar</button>
+                    <a href="{% url 'listaPagPend' %}" class="btn btn-primary btn-sm button-width">Cancelar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+-->
+</form>
+
+{% endblock %}

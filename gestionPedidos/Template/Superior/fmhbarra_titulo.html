@@ -1,0 +1,128 @@
+{% load static %} 
+<html>
+
+<head>
+    {% include "superior/fmhbootstrap.html" %}
+</head>
+
+<style>
+    #barraTitulo{
+        max-width: 99%;
+        background-color: rgba(80, 125, 168, 0.973);
+        text-align: initial;
+        font-size: 28px;
+        font-family: 'Trebuchet MS', 'Gill Sans', 'Gill Sans MT', 'Calibri', 'sans-serif';
+        color: white;
+        padding: 10px;
+    }
+
+    #segunda{
+        text-align: center;
+    }
+
+    #tituloPeriodo{
+        font-family:'Oswald', 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', 'sans-serif';
+        font-size: 1.1em;
+        line-height: 1.2em;
+        color: white;
+        padding: 5px;
+    }
+
+    #tamanoPeriodo{
+        font-size: 17px;
+        font-family: 'Quattrocento', 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', 'sans-serif';
+        color: rgb(233, 233, 153);
+    }
+
+/*
+    #tercera{
+        padding-left: 80px;
+    }
+*/
+
+   /* Style para cuadro ultimo periodo cerrado */
+    #TitultPer{
+        font: normal 14px Trebuchet MS;
+        color: rgb(159, 238, 40);
+        text-align: center;
+        padding: 5px;
+    }
+
+    #textPerCer{
+        font: normal 12px Trebuchet MS;
+        text-align: right;
+        padding: 2px;
+    }
+
+    #separa{
+        padding-top: 5px;
+    }
+
+    #campos{
+        background-color: whitesmoke;
+        border-style: inset;
+        color: black;
+        font: normal 12px Trebuchet MS;
+        height: 22px;
+        text-align: left;
+        padding: 2px;
+        width: 110px;
+    }
+
+/*    .spaceultAngo{
+        margin-right: 3px;
+    }
+    */
+
+</style>
+
+<body>
+
+    <div class="container-fluid" id="barraTitulo">
+        <div class="row">
+            <!-- Logo Primera Columna -->
+            <div class="col col-4">
+                <img src="{% static 'images/logo.JPG' %}" width="325" height="110px"/>
+            </div>
+
+            <!-- Titulo Central -->
+            <div class="col col-4" id="segunda">
+                <p id="tituloPeriodo">Período de Proceso<p>
+                    <marquee width=50% height=60>
+                        <p id="tamanoPeriodo"><strong>{{periodo}}</strong></p>
+                    </marquee>
+            </div>
+
+            <!-- Columna Datos  y Logout -->
+            <div class="col col-4">
+                <div class="form-group">
+                    <div class="container">
+                        <div class="row" id="TitultPer">
+                            <div class="col col-7">ULTIMO PERIODO CERRADO</div>
+                            <div class="col col-5"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-2"><label id="textPerCer">Periodo:</div>
+                            <div class="col col-4"><p id="campos">{{ ultAngo }}</p></div>
+                            <div class="col col-2"><label id="textPerCer">Usuario:</div>
+                            <div class="col col-4"><p id="campos">{{ user.username }}</p></div>
+                        </div>
+                        <div class="row" id="separa">
+                            <div class="col col-2"><label id="textPerCer">Mes:</div>
+                            <div class="col col-4"><p id="campos">{{ ultMes }}</p></div>
+                            <div class="col col-2"><label id="textPerCer"></div>
+                            <div class="col col-4">
+                                <a href="{% url 'logout' %}">
+                                    <img src="{% static 'images/logout.jpg' %}" width="50" height="45px"/>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

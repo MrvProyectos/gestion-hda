@@ -1,0 +1,111 @@
+{% extends "Superior/fmhbaseOpciones.html" %}
+
+{% block title %}Movimientos{% endblock %}
+
+{% block content %}
+
+<!-- Estilos -->
+<style>
+    #style_tit{
+        background-color: rgb(195, 200, 209);
+        color: rgb(53, 40, 40);
+        font: normal 14px Trebuchet MS;
+        padding: 4px;
+        padding-left: 10px;
+        border-radius: 5px;
+    }
+
+    #campo_id{
+        color: red;
+        font-size: 26px;
+        padding-top: 5px;
+    }
+
+    #campos{
+        padding-top: 5px;
+    }
+
+    .campos-glosa{
+        padding: 5px;
+        max-width: 300px;
+    }
+
+    .campo-mtoing{
+        padding: 5px;
+        max-width: 200px;
+    }
+
+</style>
+
+<div class="row" id="barraSubTitulo">
+    <div class="col col-1" id="primera">Edición de Movimientos</div>
+</div>
+<br>
+
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <!-- ID -->
+        <div class="form-group">
+            <div class="row">
+                <div id="style_tit" class="col col-1">
+                    <label>ID</label>
+                </div>
+                <div id="campo_id" >
+                    <strong>
+                    {{ form.id.errors }}
+                    {{ form.id }}
+                    </strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tipo de Ingreso -->
+        <hr>
+        <div class="form-group">
+            <div class="row">
+                <div id="style_tit" class="col col-1">
+                    <label>Tipo de Movimiento</label>
+                </div>
+                <div id="campos" >
+                    {{ form.movcodtipo.errors }}
+                    {{ form.movcodtipo }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div id="style_tit" class="col col-1">
+                    <label>Descripcion</label>
+                </div>
+                <div class="campos-glosa">
+                    {{ form.movglosa.errors }}
+                    {{ form.movglosa }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div id="style_tit" class="col col-1">
+                    <label>Monto del Gasto</label>
+                </div>
+                <div class="campo-mtoing">
+                    {{ form.movmto.errors }}
+                    {{ form.movmto }}
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div>
+            <button type="submit" class="btn btn-primary button-width">Actualizar</button>
+            <a href="{% url 'vuelveGMovimie' %}" class="btn btn-primary button-width">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}

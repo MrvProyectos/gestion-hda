@@ -1,0 +1,235 @@
+{% extends "Superior/fmhbaseOpciones.html" %}
+
+{% block title %}Gestion de Movimientos{% endblock %}
+
+{% load humanize %}
+
+{% block content %}
+
+<style>
+
+    #scrollTable table{
+        max-width: 100%;
+        font-size: 12px;
+        border: 1px solid gray;
+    }
+
+    #scrollTable{
+        overflow-y: scroll;
+        height: 430;
+    }
+
+    thead th{
+        position: sticky;
+        top: 0;
+        background-color: rgb(93, 125, 161);
+        color: rgb(248, 248, 244);
+    }
+
+    #checkall{
+        padding-top: 10px;
+    }
+
+    #alingRigth{
+        text-align: right;
+        padding-right: 5px;
+    }
+
+    #pagopdte{
+        color: red;
+    }
+    
+    #pagopag{
+        color: green;
+    }
+
+    #text1{
+        padding-top: 5px;
+        color: black;
+        text-align: left;
+        font-size: 12px;
+    }
+    
+    #text2{
+        padding-top: 5px;
+        padding-bottom: 5px;
+        color: rgb(4, 148, 4);
+        text-align: left;
+        font-size: 15px;
+    }
+
+    #text3{
+        padding-top: 5px;
+        padding-bottom: 5px;
+        color: rgb(226, 49, 49);
+        text-align: left;
+        font-size: 15px;
+    }
+
+    .contleft{
+        float: left;
+        width: fit-content;
+        background-color: gray snow;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        border-style: groove;
+        border-radius: 7px;
+        height: 430px;
+        border-color: whitesmoke;
+        margin-left: 12px;
+    }
+
+    #filtro h5{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        color:rgb(95, 92, 92);
+    }
+
+    #seleccion{
+        padding: 4px;
+        font-size: 12px;
+    }
+
+    #seleccion :hover{
+        color: black;
+        background: #c4c4c4;
+        border-radius: 4px;
+    }
+
+    a:link, a:visited, a:active {
+        text-decoration:none;
+    }
+
+</style>
+
+<!-- Funcion para checkbox general -->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js"></script>-->
+    
+<!-- Sub-Titulo -->
+    <div class="row" id="barraSubTitulo">
+        <div class="col col-6" id="primera">MOVIMIENTOS INGRESADOS</div>
+    </div>
+    {% if listing %}
+
+    <br>
+    <div class="container contleft">
+        <div id="text1">Total de Movimientos</div>
+        <div id="text2">{{listing|length}}</div>
+        <div id="text1">Total Pagos Realizados</div>
+        <div id="text3">$ {{STotPag|intcomma}}</div>
+        <div id="text1">Total Pagos Pendientes</div>
+        <div id="text3">$ {{STotPdte|intcomma}}</div>
+        <hr>
+
+        <div id="filtro">
+            <h5>Filtro Est. Pago</h5>
+            <ul>
+                <li id="seleccion"><a href="{% url 'gestionMovimientos' 3 %}">Todo</a></li>
+                <li id="seleccion"><a href="{% url 'gestionMovimientos' 1 %}">Pagado</a></li>
+                <li id="seleccion"><a href="{% url 'gestionMovimientos' 0 %}">Pendiente</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <form id="formGestMov" action="/ElimselallMov/" method="POST">
+            {% csrf_token %}
+
+        <div id="scrollTable">
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="selectall"></th>
+                <th>#ID</th>
+                <th>Año</th>
+                <th>Mes</th>
+                <th>Tipo de Mvto.</th>
+                <th>Descripción</th>
+                <th id="alingRigth">Monto $</th>
+                <th>Est. Pago</th>
+                <th style="text-align: center; background-color: rgb(62, 108, 158);" colspan="2">SELECCIONE OPCIÓN</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for listado in listing %}
+                <tr>
+                    {% if listado.movestado == 0 %}
+                       <td><input type="checkbox" class="case" name="estcheck" value="{{listado.id}}"></td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+
+                <td><strong>{{listado.id}}</strong></td>
+                <td>{{listado.movango}}</td>
+                <td>{{listado.movmes}}</td>
+           
+                {% if listado.movcodtipo == 'GTO01' %}       <td>Financieros</td>
+                {% elif listado.movcodtipo == 'GTO02' %}     <td>Fijos</td>
+                {% elif listado.movcodtipo == 'GTO03' %}     <td>Autopistas</td>
+                {% elif listado.movcodtipo == 'GTO04' %}     <td>Tecnología</td>
+                {% elif listado.movcodtipo == 'GTO05' %}     <td>Gastos Médicos</td>
+                {% elif listado.movcodtipo == 'GTO06' %}     <td>Colegios</td>
+                {% elif listado.movcodtipo == 'GTO07' %}     <td>Supermercado</td>
+                {% elif listado.movcodtipo == 'GTO08' %}     <td>Contribuciones</td>
+                {% elif listado.movcodtipo == 'GTO09' %}     <td>Otros Gastos</td>
+                {% else %}                                   <td></td>
+                {% endif %}
+
+                <td>{{listado.movglosa}}</td>
+                <td id="alingRigth">{{listado.movmto|intcomma}}</td>
+                
+                {% if listado.movestado == 0 %}
+                    <td id="pagopdte"><strong>Pendiente</strong></td>
+                {% else %}
+                    <td id="pagopag"><strong>Pagado</strong></td>
+                {% endif %}
+               
+                {% if listado.movestado == 0 %}
+                    <td id="alingbuteli"><a href="{% url 'eliminaMov' listado.id listado.movango listado.movmes %}" class="btn btn-danger btn-sm">Elimina</a></td>
+                    <td><a href="{% url 'actualizaMov' listado.id %}" class="btn btn-primary btn-sm">Modifica</a></td>
+                {% else %}
+                    <td></td>
+                    <td></td>
+                {% endif %}
+                </tr>
+
+                {%endfor %}
+
+            </tbody>
+        </table>
+        </div>
+        <div class="form-group" id="checkall">
+            <input type="submit" class="btn btn-danger btn-sm" value="Elimina Selección" id="enviar">
+        </div>
+        </form>
+
+        <!-- casilla de eliminacion masiva -->
+        <script>
+            $("#selectall").on("click", function() {
+              $(".case").prop("checked", this.checked);
+            });
+            
+            // Si todas las casillas están seleccionadas, marque la casilla Seleccionar todo y viceversa.
+            $(".case").on("click", function() {
+                if ($(".case").length == $(".case:checked").length) {
+                    $("#selectall").prop("checked", true);
+                    } 
+                else {
+                    $("#selectall").prop("checked", false);
+                    }
+            });
+        </script>
+        
+        {% else %}
+            <h2>ATENCIÓN. No existen registros para periodo iniciado.</h2>
+        {% endif %}
+
+        <hr>
+        <div class="form-group">
+            <div id="outer">
+                <div class="inner"><a href="{% url 'IngresoDeb' %}" class="btn btn-primary btn-sm button-width">Movimientos</a></div>
+                <div class="inner"><a href="{% url 'gestionHogar' %}" class="btn btn-primary btn-sm button-width">Inicio</a></div>
+            </div>
+        </div>
+
+    </div>
+
+{%  endblock %}

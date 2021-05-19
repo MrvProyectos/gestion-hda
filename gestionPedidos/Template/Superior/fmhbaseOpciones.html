@@ -1,0 +1,101 @@
+{% load static %}
+
+<html>
+<head>
+    <title>
+        {% block title %} 
+        <!-- Contenido cambiante-->
+        {% endblock %}
+    </title>
+</head>
+
+<!-- DatePicker -->
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+<!-- Formulario -->
+{{ form.media }}
+
+
+<style>
+
+    #barraTitulo{
+        max-width: 99%;
+        background-color: rgba(80, 125, 168, 0.973);
+        text-align:initial;
+        font-size: 30px;
+        font-family:'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', 'sans-serif';
+        color: white;
+        padding: 10px;
+        margin: auto;
+    }
+
+    #barraTitulo a{
+        color: white;
+    }
+
+    #barraSubTitulo{
+        max-width: 99%;
+        background-color: rgba(114, 144, 172, 0.973);
+        text-align: left;
+        font-size: 20px;
+        font-family:'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', 'sans-serif';
+        font-stretch: semi-expanded;
+        color:rgba(243, 247, 6, 0.973);
+        padding: 5px;
+        padding-left: 15px;
+        margin: auto;
+    }
+
+    #primera{
+        padding-left: 25px;
+    }
+
+    /* Con esto centramos los botones */
+    #outer{
+        width:100%;
+        text-align: center;
+    }
+    .inner{
+        display: inline-block;
+    }
+
+    body {
+        margin: 0; 
+        background: white;
+    }
+
+    /* Linea Horizontal */
+    hr{
+        height: 1px;
+        background-color: maroon;
+    }
+
+    /* Ancho fijo de los botones */
+    .button-width{
+        width: 100px;
+    }
+
+    .button-width-me{
+        width: 120px;
+    }
+
+    #alingbuteli{
+        text-align: right;
+        width: 110px;
+    }
+
+</style>
+
+<body>
+    <!-- Barra Titulo -->
+    <div class="row" id="barraTitulo">
+        <a href="{% url 'gestionHogar' %}"><div class="col" id="primera">GESTION FINANCIERA</div></a>
+    </div>
+
+    {% block content %}
+    <!-- Contenido cambiante -->
+    {% endblock %}
+
+</body>
+</html>

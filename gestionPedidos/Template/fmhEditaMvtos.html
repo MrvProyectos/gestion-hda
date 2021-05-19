@@ -1,0 +1,183 @@
+{% extends "Superior/fmhbaseOpciones.html" %}
+
+{% block title %}Movimientos{% endblock %}
+
+{% load humanize %}
+
+{% block content %}
+
+{% load static %}
+
+<!-- Estilos -->
+<style>
+
+    #style_titP{
+        color: rgb(53, 40, 40);
+        font: normal 12px Trebuchet MS;
+        padding-top: 5px;
+        text-align: left;
+    }
+
+    #style_tit{
+        color: rgb(53, 40, 40);
+        font: bold 12px Trebuchet MS;
+        padding-left: 3px;
+    }
+
+    #campos{
+        background-color: whitesmoke;
+        border-style: inset;
+        color: black;
+        font: normal 12px Trebuchet MS;
+        height: 24px;
+        padding: 2px;
+        margin-left: 13px;
+    }
+
+    #style_titDer{
+        color: rgb(53, 40, 40);
+        font: bold 12px Trebuchet MS;
+        padding-left: 120px;
+    }
+
+    /* Campos del Formulario */
+    #id_id{
+        color: red;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 13px;
+    }
+
+    #id_movcodtipo{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 13px;
+        color: rgb(105, 104, 104);
+    }
+
+    #id_movglosa{
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 13px;
+        color: rgb(105, 104, 104);
+    }
+
+    #id_movmto{
+        font: normal 13px Trebuchet MS;
+        color: black;
+        width: 150px;
+        text-align: right;
+    }
+
+</style>
+
+<script>
+
+    function Valida(miForm) {
+        valor=document.getElementById("id_movmto").value
+
+        if (isNaN(valor)) {
+            alert('ATENCIÓN. El monto $ ingresado debe ser numérico');
+            document.getElementById('id_movmto').value = '';
+            document.miForm.id_movmto.focus()
+            return false;
+            }
+        else {
+            if (valor<=0) {
+                alert('ATENCIÓN. Monto $ debe ser Mayor a 0');
+                document.getElementById('id_movmto').value = '';
+                document.miForm.id_movmto.focus()
+                return false;
+                }
+        }
+        return true;
+        }
+
+</script>
+
+<div class="row" id="barraSubTitulo">
+    <div class="col col-6" id="primera">ACTUALIZACIÓN DE MOVIMIENTOS</div>
+</div>
+
+<div class="form-group">
+<div class="container">
+    <form method="POST" name="miForm" onsubmit="return Valida(this);">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+    
+        <!-- Grupo 1 -->
+        <div class="form-group">
+            <div class="container">
+                <!-- Período -->
+                <div class="row">
+                    <div id="style_titP" class="col col-1"><label>Periodo</label></div>
+                    <div id="style_titP" class="col col-3"><label>&nbsp;&nbsp;&nbsp;Mes</label></div>
+                </div>
+                <div class="row">
+                    <div class="col col-1" id="campos">{{ Periodo }}</div>
+                    <div class="col col-3" id="campos">{{ Mes }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grupo 2 -->
+        <div class="form-group">
+            <div class="container">
+                <hr>
+                <!-- ID -->
+                <div class="row">
+                    <div class="col col-4">
+                        <div id="style_tit"><label>ID</label></div>
+                        {{ form.movmto.errors }}
+                        {{ form.id }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grupo 3 -->
+        <div class="form-group">
+            <div class="container">
+                <!-- Tipo de Ingreso -->
+                <div class="row">
+                    <div class="col col-4">
+                        <div id="style_tit"><label>Tipo Mov. Gasto</label></div>
+                        {{ form.movcodtipo.errors }}
+                        {{ form.movcodtipo }}
+                    </div>
+                    <div class="col col-6">
+                        <div id="style_tit"><label>Concepto</label></div>
+                        {{ form.movglosa.errors }}
+                        {{ form.movglosa }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grupo 4 -->
+        <div class="form-group">
+            <div class="container">
+                <!-- Monto Ingreso -->
+                <div class="row">
+                    <div class="col col-4">
+                        <div id="style_titDer"><label>Valor</label></div>
+                        {{ form.movmto.errors }}
+                        {{ form.movmto }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Grupo Submit -->
+        <div class="form-group">
+            <div class="container">
+                <div class="row">
+                    <div class="col col-12">
+                        <button type="submit" class="btn btn-success btn-sm  button-width">Actualizar</button>
+                        <a href="{% url 'gestionMovimientos' 3 %}" class="btn btn-primary btn-sm button-width">Cancelar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+
+{% endblock %}
